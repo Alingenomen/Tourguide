@@ -10,11 +10,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +33,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggleButton;
     private NavigationView sideMenu;
+    private boolean restoOn, natureOn, transpoOn, sportsOn = false;
+    private ImageView restoImage, natureImage, transpoImage, sportsImage;
     MapView mMapView;
 
     SupportMapFragment mapFragment;
@@ -48,10 +48,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
 
+        // initialise views
+        restoImage = rootView.findViewById(R.id.restoIcon);
+        natureImage = rootView.findViewById(R.id.natureIcon);
+        transpoImage = rootView.findViewById(R.id.transportIcon);
+        sportsImage = rootView.findViewById(R.id.sportsIcon);
+
         MapsInitializer.initialize(this.getActivity());
+
+        initialiseOnclickListeners();
 
         mapFragment = SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
@@ -63,6 +70,74 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
 
         return rootView;
+    }
+
+    /**
+     * This method initialises the OnClickListeners of all the views
+     * -- Fullsccreen button
+     */
+    private void initialiseOnclickListeners() {
+        // Set a click listener on that View
+
+        restoImage.setOnClickListener(new View.OnClickListener() {
+            // The code in this method will be executed when the numbers category is clicked on.
+            @Override
+            public void onClick(View view) {
+
+                if (!restoOn) {
+                    restoImage.setImageResource(R.drawable.ic_dinner_on);
+                    restoOn = true;
+                } else {
+                    restoImage.setImageResource(R.drawable.ic_dinner_off);
+                    restoOn = false;
+                }
+            }
+        });
+
+        natureImage.setOnClickListener(new View.OnClickListener() {
+            // The code in this method will be executed when the numbers category is clicked on.
+            @Override
+            public void onClick(View view) {
+
+                if (!natureOn) {
+                    natureImage.setImageResource(R.drawable.ic_nature_on);
+                    natureOn = true;
+                } else {
+                    natureImage.setImageResource(R.drawable.ic_nature_off);
+                    natureOn = false;
+                }
+            }
+        });
+
+        transpoImage.setOnClickListener(new View.OnClickListener() {
+            // The code in this method will be executed when the numbers category is clicked on.
+            @Override
+            public void onClick(View view) {
+
+                if (!transpoOn) {
+                    transpoImage.setImageResource(R.drawable.ic_transport_on);
+                    transpoOn = true;
+                } else {
+                    transpoImage.setImageResource(R.drawable.ic_transport_off);
+                    transpoOn = false;
+                }
+            }
+        });
+
+        sportsImage.setOnClickListener(new View.OnClickListener() {
+            // The code in this method will be executed when the numbers category is clicked on.
+            @Override
+            public void onClick(View view) {
+
+                if (!sportsOn) {
+                    sportsImage.setImageResource(R.drawable.ic_sports_on);
+                    sportsOn = true;
+                } else {
+                    sportsImage.setImageResource(R.drawable.ic_sports_off);
+                    sportsOn = false;
+                }
+            }
+        });
     }
 
     /**
