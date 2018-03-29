@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
+
+    private String tabHeaders[] = new String[] {"Map", "Transport", "Resto", "Nature", "Sports"};
+
     public SimpleFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -47,5 +50,9 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
         return 5;
     }
 
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return tabHeaders[position];
+    }
 
 }

@@ -1,8 +1,12 @@
 package com.example.android.tourguide;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
@@ -19,6 +23,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -51,8 +56,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapFragment = SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
 
-
-
         //TextView textView = new TextView(getActivity());
         //textView.setText(R.string.hello_blank_fragment);
         //return textView;
@@ -75,6 +78,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        styleTheMap(googleMap);
+
+        setMyLocation(googleMap);
+
         // Add a marker in Sydney and move the camera
         LatLng Eeklo = new LatLng(51.185272, 3.563890);
         mMap.addMarker(new MarkerOptions().position(Eeklo).title("Marker in Eeklo"));
@@ -83,12 +90,29 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     /**
-     * Proved the override function for the mToggleButton so
-     * When it gets tapped, the Navigation menu appears
+     * Check the user's permission to use the GPS
+     * If permission available, call the method mMap.setMyLocationEnabled(true)
+     * If permission not yet avail, request the permission to the user
+     * If permission denied, do not show the user location
      */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return mToggleButton.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    private void setMyLocation(GoogleMap googleMap) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+        } else {
+            // permission request
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(false);
+        }
+    }
+
+    /**
+     * Set map style using the stylefile in
+     * the resource folder raw/mapstyle.json
+     */
+    private void styleTheMap(GoogleMap googleMap) {
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.mapstyle));
     }
 
     // This function adds markers for the given location type
