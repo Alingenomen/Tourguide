@@ -15,6 +15,9 @@ import com.google.android.gms.maps.GoogleMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int tabHeaderImages[] = new int[] {R.drawable.ic_googlemaps, R.drawable.ic_transport_off,
+            R.drawable.ic_dinner_off, R.drawable.ic_nature_off, R.drawable.ic_sports_off};
+
     // Oncreate Method of the locator activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,5 +33,10 @@ public class MainActivity extends AppCompatActivity {
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        // configure icons
+        for (int i = 0; i < tabHeaderImages.length; i++) {
+            tabLayout.getTabAt(i).setIcon(tabHeaderImages[i]);
+        }
     }
 }

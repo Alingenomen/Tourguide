@@ -52,7 +52,9 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabHeaders[position];
+        return null;
     }
+
+
 
 }

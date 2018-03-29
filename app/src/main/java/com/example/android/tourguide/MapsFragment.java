@@ -3,12 +3,9 @@ package com.example.android.tourguide;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +13,6 @@ import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,26 +20,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggleButton;
-    private NavigationView sideMenu;
     private boolean restoOn, natureOn, transpoOn, sportsOn = false;
     private ImageView restoImage, natureImage, transpoImage, sportsImage;
-    MapView mMapView;
-
-    SupportMapFragment mapFragment;
-
+    private SupportMapFragment mapFragment;
 
     public MapsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,8 +59,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     /**
-     * This method initialises the OnClickListeners of all the views
-     * -- Fullsccreen button
+     * This method initialises the OnClickListeners of
+     * the four ImageViews
      */
     private void initialiseOnclickListeners() {
         // Set a click listener on that View
@@ -166,7 +152,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     /**
      * Check the user's permission to use the GPS
-     * If permission available, call the method mMap.setMyLocationEnabled(true)
+     * If permission available, call the method googleMap.setMyLocationEnabled(true)
      * If permission not yet avail, request the permission to the user
      * If permission denied, do not show the user location
      */
