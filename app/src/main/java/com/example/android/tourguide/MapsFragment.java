@@ -32,7 +32,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     // Public constructor of the fragment
     public MapsFragment() {
-        // Required empty public constructor
+        // empty
     }
 
     // Oncreate Method of the MapsFragment
