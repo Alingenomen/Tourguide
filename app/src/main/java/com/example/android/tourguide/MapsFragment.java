@@ -130,7 +130,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         LatLng Eeklo = new LatLng(51.185272, 3.563890);
-        mMap.addMarker(new MarkerOptions().position(Eeklo).title("Marker in Eeklo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Eeklo));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(13.0f));
     }
