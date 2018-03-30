@@ -10,20 +10,22 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
+    // Global variables
+    private MapsFragment mapsFragment = new MapsFragment();
+    private NatureFragment natureFragment = new NatureFragment();
+    private PublicTransportationFragment pubTransFragment = new PublicTransportationFragment();
+    private RestaurantsFragment restaurantFragment = new RestaurantsFragment();
+    private SportsFragment sportsFragment = new SportsFragment();
 
-    private SimpleFragmentPagerAdapter(FragmentManager fm) {
+    // Constructor of the SimpleFragmentPagerAdapter
+    public SimpleFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
+    // Override method which enables Fragment navigation
     @Override
     public Fragment getItem(int position) {
         // Switch case to assign fragments to their positions
-
-        MapsFragment mapsFragment = new MapsFragment();
-        NatureFragment natureFragment = new NatureFragment();
-        PublicTransportationFragment pubTransFragment = new PublicTransportationFragment();
-        RestaurantsFragment restaurantFragment = new RestaurantsFragment();
-        SportsFragment sportsFragment = new SportsFragment();
 
         switch (position){
             case 0:
@@ -42,16 +44,16 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    // Override method which returns the total fragment count
     @Override
     public int getCount() {
         return 5;
     }
 
+    // Override method which returns the Fragment Titles to display as headers
+    // empty in this case bacause we use icons, set in the MainActivity
     @Override
     public CharSequence getPageTitle(int position) {
         return null;
     }
-
-
-
 }
