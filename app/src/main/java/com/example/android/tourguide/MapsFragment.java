@@ -64,7 +64,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         initialiseOnclickListeners();
 
         // Read the location data from a raw CSV file
-        readAllLocationDataFromCSV();
+        processAllLocationDataFromCSV();
 
         // Initialise the Google Map
         initialiseGoogleMap();
@@ -161,7 +161,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     // This method reads the location data from a raw CSV file
-    private void readAllLocationDataFromCSV(){
+    private void processAllLocationDataFromCSV(){
 
         String name, type, subtype;
         double lat, lon;
@@ -255,7 +255,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     // This function adds markers for the given location type
-    // it is declared as public because funcationality in the other fragments
+    // it is declared as public because functionality in the other fragments
     // also call this method to display certain markers
     public void addAllMarkers(ArrayList<Location> list, String color){
         switch (color){
@@ -295,7 +295,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     // This function removes markers for the given location type
-    // it is declared as public because funcationality in the other fragments
+    // it is declared as public because functionality in the other fragments
     // also call this method to display certain markers
     public void removeMarkers(ArrayList<Marker> list){
         for (int i=0; i < list.size(); i++){
