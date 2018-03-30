@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
@@ -27,8 +36,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     // Global variables
     private GoogleMap mMap;
     private boolean restoOn, natureOn, transpoOn, sportsOn = false;
-    private ImageView restoImage, natureImage, transpoImage, sportsImage;
+    private ImageView restoIcon, natureIcon, transpoIcon, sportsIcon;
     private SupportMapFragment mapFragment;
+    private ArrayList<Location> restaurantLocations = new ArrayList();
+    private ArrayList<Location> natureLocations = new ArrayList();
+    private ArrayList<Location> sportsLocations = new ArrayList();
+    private ArrayList<Location> pubTransportLocations = new ArrayList();
+    private ArrayList visiblePubTransportMarkers = new ArrayList();
+    private ArrayList visibleNatureMarkers = new ArrayList();
+    private ArrayList visibleRestaurantMarkers = new ArrayList();
+    private ArrayList visibleSportMarkers = new ArrayList();
 
     // Public constructor of the fragment
     public MapsFragment() {
@@ -37,8 +54,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     // Oncreate Method of the MapsFragment
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
 
         // initialise views
@@ -47,75 +63,157 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         // Initialise the on click listeners
         initialiseOnclickListeners();
 
+        // Read the location data from a raw CSV file
+        readAllLocationDataFromCSV();
+
         // Initialise the Google Map
         initialiseGoogleMap();
 
         return rootView;
     }
 
+    // This method initialises all the views available on the fragment
+    private void initialiseViews(View view){
+        restoIcon = view.findViewById(R.id.restoIcon);
+        natureIcon = view.findViewById(R.id.natureIcon);
+        transpoIcon = view.findViewById(R.id.transportIcon);
+        sportsIcon = view.findViewById(R.id.sportsIcon);
+    }
+
+    // This method initialises the Google Map
+    private void initialiseGoogleMap(){
+        mapFragment = SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(this);
+        getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
+    }
+
     // This method initialises the on click listeners
     private void initialiseOnclickListeners() {
         // Set a click listener on that View
 
-        restoImage.setOnClickListener(new View.OnClickListener() {
+        restoIcon.setOnClickListener(new View.OnClickListener() {
             // The code in this method will be executed when the numbers category is clicked on.
             @Override
             public void onClick(View view) {
 
                 if (!restoOn) {
-                    restoImage.setImageResource(R.drawable.ic_dinner_on);
+                    addAllMarkers(restaurantLocations, "red");
+                    restoIcon.setImageResource(R.drawable.ic_dinner_on);
                     restoOn = true;
                 } else {
-                    restoImage.setImageResource(R.drawable.ic_dinner_off);
+                    removeMarkers(visibleRestaurantMarkers);
+                    restoIcon.setImageResource(R.drawable.ic_dinner_off);
                     restoOn = false;
                 }
             }
         });
 
-        natureImage.setOnClickListener(new View.OnClickListener() {
+        natureIcon.setOnClickListener(new View.OnClickListener() {
             // The code in this method will be executed when the numbers category is clicked on.
             @Override
             public void onClick(View view) {
 
                 if (!natureOn) {
-                    natureImage.setImageResource(R.drawable.ic_nature_on);
+                    addAllMarkers(natureLocations, "green");
+                    natureIcon.setImageResource(R.drawable.ic_nature_on);
                     natureOn = true;
                 } else {
-                    natureImage.setImageResource(R.drawable.ic_nature_off);
+                    removeMarkers(visibleNatureMarkers);
+                    natureIcon.setImageResource(R.drawable.ic_nature_off);
                     natureOn = false;
                 }
             }
         });
 
-        transpoImage.setOnClickListener(new View.OnClickListener() {
+        transpoIcon.setOnClickListener(new View.OnClickListener() {
             // The code in this method will be executed when the numbers category is clicked on.
             @Override
             public void onClick(View view) {
 
                 if (!transpoOn) {
-                    transpoImage.setImageResource(R.drawable.ic_transport_on);
+                    addAllMarkers(pubTransportLocations, "orange");
+                    transpoIcon.setImageResource(R.drawable.ic_transport_on);
                     transpoOn = true;
                 } else {
-                    transpoImage.setImageResource(R.drawable.ic_transport_off);
+                    removeMarkers(visiblePubTransportMarkers);
+                    transpoIcon.setImageResource(R.drawable.ic_transport_off);
                     transpoOn = false;
                 }
             }
         });
 
-        sportsImage.setOnClickListener(new View.OnClickListener() {
+        sportsIcon.setOnClickListener(new View.OnClickListener() {
             // The code in this method will be executed when the numbers category is clicked on.
             @Override
             public void onClick(View view) {
 
                 if (!sportsOn) {
-                    sportsImage.setImageResource(R.drawable.ic_sports_on);
+                    addAllMarkers(sportsLocations, "blue");
+                    sportsIcon.setImageResource(R.drawable.ic_sports_on);
                     sportsOn = true;
                 } else {
-                    sportsImage.setImageResource(R.drawable.ic_sports_off);
+                    removeMarkers(visibleSportMarkers);
+                    sportsIcon.setImageResource(R.drawable.ic_sports_off);
                     sportsOn = false;
                 }
             }
         });
+    }
+
+    // This method reads the location data from a raw CSV file
+    private void readAllLocationDataFromCSV(){
+
+        String name, type, subtype;
+        double lat, lon;
+        //int imageId;
+
+        InputStream csvStream = getResources().openRawResource(R.raw.locations);
+        BufferedReader csvReader = new BufferedReader(
+                new InputStreamReader(csvStream, Charset.forName("UTF-8")));
+        String line = "";
+
+        try {
+            while ((line = csvReader.readLine()) != null) {
+                // Split the line into different cells
+                // using the comma as a separator).
+                String[] cell = line.split(";");
+                name = cell[0];
+                type = cell[1];
+                subtype = cell[2];
+                lat = Double.parseDouble(cell[3]);
+                lon = Double.parseDouble(cell[4]);
+                //imageId = Integer.parseInt(R.drawable+cell[5]);
+
+                // Read the location data and send it
+                // to the gatherLocation method to appoint it to its respective
+                // Arraylist
+                Location location = new Location(name, type, subtype, lat, lon);
+                addLocationToItsArraylist(location);
+
+            }
+        } catch (IOException e1) {
+            Log.e("csvReader", "Error" + line, e1);
+            e1.printStackTrace();
+        }
+    }
+
+    // This method adds the location, read from the
+    private void addLocationToItsArraylist(Location loc){
+        String locationType = loc.getType();
+
+        switch (locationType){
+            case "pubTransportLocation":
+                pubTransportLocations.add(loc);
+                break;
+            case "restaurantLocation":
+                restaurantLocations.add(loc);
+                break;
+            case "natureLocation":
+                natureLocations.add(loc);
+                break;
+            case "sportLocation":
+                sportsLocations.add(loc);
+        }
     }
 
     // This override method contains all the google map functionality
@@ -159,22 +257,49 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     // This function adds markers for the given location type
     // it is declared as public because funcationality in the other fragments
     // also call this method to display certain markers
-    public void addMarkers(){
-
+    public void addAllMarkers(ArrayList<Location> list, String color){
+        switch (color){
+            case "orange":
+                // The markers to add are Public Transportation locations
+                for (int i=0; i < list.size(); i++){
+                    LatLng markerLocation = new LatLng(list.get(i).getLat(),list.get(i).getLon());
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(markerLocation)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    visiblePubTransportMarkers.add(marker);
+                }
+                break;
+            case "green":
+                // The markers to add are Nature locations
+                for (int i=0; i < list.size(); i++){
+                    LatLng markerLocation = new LatLng(list.get(i).getLat(),list.get(i).getLon());
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(markerLocation)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    visibleNatureMarkers.add(marker);
+                }                break;
+            case "red":
+                // The markers to add are Restaurant locations
+                for (int i=0; i < list.size(); i++){
+                    LatLng markerLocation = new LatLng(list.get(i).getLat(),list.get(i).getLon());
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(markerLocation)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    visibleRestaurantMarkers.add(marker);
+                }                break;
+            case "blue":
+                // The markers to add are Sport locations
+                for (int i=0; i < list.size(); i++){
+                    LatLng markerLocation = new LatLng(list.get(i).getLat(),list.get(i).getLon());
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(markerLocation)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    visibleSportMarkers.add(marker);
+                }        }
     }
 
-    // This method initialises all the views available on the activity
-    private void initialiseViews(View view){
-        restoImage = view.findViewById(R.id.restoIcon);
-        natureImage = view.findViewById(R.id.natureIcon);
-        transpoImage = view.findViewById(R.id.transportIcon);
-        sportsImage = view.findViewById(R.id.sportsIcon);
-    }
-
-    // This method initialises the Google Map
-    private void initialiseGoogleMap(){
-        mapFragment = SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(this);
-        getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
+    // This function removes markers for the given location type
+    // it is declared as public because funcationality in the other fragments
+    // also call this method to display certain markers
+    public void removeMarkers(ArrayList<Marker> list){
+        for (int i=0; i < list.size(); i++){
+            list.get(i).remove();
+        }
     }
 }

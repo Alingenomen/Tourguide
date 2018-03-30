@@ -31,27 +31,27 @@ public class Location {
     }
 
     // Getter methods
-    private String getName(){
+    public String getName(){
         return name;
     }
 
-    private String getType(){
+    public String getType(){
         return type;
     }
 
-    private String getSubtype(){
+    public String getSubtype(){
         return subtype;
     }
 
-    private double getLat(){
+    public double getLat(){
         return lat;
     }
 
-    private double getLon(){
+    public double getLon(){
         return lon;
     }
 
-    private int getImageId(){
+    public int getImageId(){
         return imageId;
     }
 }

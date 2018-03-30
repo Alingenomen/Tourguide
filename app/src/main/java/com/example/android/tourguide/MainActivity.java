@@ -10,8 +10,8 @@ public class MainActivity extends AppCompatActivity {
     // Global variables
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private int tabHeaderImages[] = new int[] {R.drawable.ic_googlemaps, R.drawable.ic_transport_off,
-            R.drawable.ic_dinner_off, R.drawable.ic_nature_off, R.drawable.ic_sports_off};
+    private int tabHeaderImages[] = new int[] {R.drawable.ic_googlemaps, R.drawable.ic_dinner_off,
+            R.drawable.ic_sports_off, R.drawable.ic_nature_off, R.drawable.ic_transport_off};
 
     // Oncreate Method of the locator activity
     @Override
