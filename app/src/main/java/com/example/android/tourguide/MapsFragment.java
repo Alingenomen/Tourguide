@@ -20,48 +20,40 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Set;
+
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
+    // Global variables
     private GoogleMap mMap;
     private boolean restoOn, natureOn, transpoOn, sportsOn = false;
     private ImageView restoImage, natureImage, transpoImage, sportsImage;
     private SupportMapFragment mapFragment;
 
+    // Public constructor of the fragment
     public MapsFragment() {
         // Required empty public constructor
     }
 
+    // Oncreate Method of the MapsFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
 
         // initialise views
-        restoImage = rootView.findViewById(R.id.restoIcon);
-        natureImage = rootView.findViewById(R.id.natureIcon);
-        transpoImage = rootView.findViewById(R.id.transportIcon);
-        sportsImage = rootView.findViewById(R.id.sportsIcon);
+        initialiseViews(rootView);
 
-        MapsInitializer.initialize(this.getActivity());
-
+        // Initialise the on click listeners
         initialiseOnclickListeners();
 
-        mapFragment = SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(this);
-
-        //TextView textView = new TextView(getActivity());
-        //textView.setText(R.string.hello_blank_fragment);
-        //return textView;
-
-        getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
+        // Initialise the Google Map
+        initialiseGoogleMap();
 
         return rootView;
     }
 
-    /**
-     * This method initialises the OnClickListeners of
-     * the four ImageViews
-     */
+    // This method initialises the on click listeners
     private void initialiseOnclickListeners() {
         // Set a click listener on that View
 
@@ -126,15 +118,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    // This override method contains all the google map functionality
+    // when the google map is ready via its callback method
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -150,12 +135,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(13.0f));
     }
 
-    /**
-     * Check the user's permission to use the GPS
-     * If permission available, call the method googleMap.setMyLocationEnabled(true)
-     * If permission not yet avail, request the permission to the user
-     * If permission denied, do not show the user location
-     */
+    // Check the user's permission to use the GPS
+    // If permission available, call the method googleMap.setMyLocationEnabled(true)
+    // If permission not yet avail, request the permission to the user
+    // If permission denied, do not show the user location
     private void setMyLocation(GoogleMap googleMap) {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
@@ -168,26 +151,31 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    /**
-     * Set map style using the stylefile in
-     * the resource folder raw/mapstyle.json
-     */
+    // Set map style using the stylefile in
+    //the resource folder raw/mapstyle.json
     private void styleTheMap(GoogleMap googleMap) {
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.mapstyle));
     }
 
     // This function adds markers for the given location type
+    // it is declared as public because funcationality in the other fragments
+    // also call this method to display certain markers
     public void addMarkers(){
 
     }
 
     // This method initialises all the views available on the activity
-    public void initialiseViews(){
-
+    private void initialiseViews(View view){
+        restoImage = view.findViewById(R.id.restoIcon);
+        natureImage = view.findViewById(R.id.natureIcon);
+        transpoImage = view.findViewById(R.id.transportIcon);
+        sportsImage = view.findViewById(R.id.sportsIcon);
     }
 
-    public void initialiseOnClickListeners(){
-
+    // This method initialises the Google Map
+    private void initialiseGoogleMap(){
+        mapFragment = SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(this);
+        getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
     }
-
 }

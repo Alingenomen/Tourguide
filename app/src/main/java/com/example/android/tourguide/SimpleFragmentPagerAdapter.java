@@ -1,6 +1,5 @@
 package com.example.android.tourguide;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,9 +10,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private String tabHeaders[] = new String[] {"Map", "Transport", "Resto", "Nature", "Sports"};
 
-    public SimpleFragmentPagerAdapter(FragmentManager fm) {
+    private SimpleFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -21,7 +19,6 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // Switch case to assign fragments to their positions
 
-        Bundle bundle;
         MapsFragment mapsFragment = new MapsFragment();
         NatureFragment natureFragment = new NatureFragment();
         PublicTransportationFragment pubTransFragment = new PublicTransportationFragment();
