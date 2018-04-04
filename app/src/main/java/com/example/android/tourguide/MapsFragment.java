@@ -38,10 +38,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private boolean restoOn, natureOn, transpoOn, sportsOn = false;
     private ImageView restoIcon, natureIcon, transpoIcon, sportsIcon;
     private SupportMapFragment mapFragment;
-    private ArrayList<Location> restaurantLocations = new ArrayList();
-    private ArrayList<Location> natureLocations = new ArrayList();
-    private ArrayList<Location> sportsLocations = new ArrayList();
-    private ArrayList<Location> pubTransportLocations = new ArrayList();
+    public static ArrayList<Location> restaurantLocations = new ArrayList();
+    public static ArrayList<Location> natureLocations = new ArrayList();
+    public static ArrayList<Location> sportsLocations = new ArrayList();
+    public static ArrayList<Location> pubTransportLocations = new ArrayList();
     private ArrayList visiblePubTransportMarkers = new ArrayList();
     private ArrayList visibleNatureMarkers = new ArrayList();
     private ArrayList visibleRestaurantMarkers = new ArrayList();

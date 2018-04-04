@@ -31,13 +31,13 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return mapsFragment;
             case 1:
-                return pubTransFragment;
-            case 2:
                 return restaurantFragment;
+            case 2:
+                return sportsFragment;
             case 3:
                 return natureFragment;
             case 4:
-                return sportsFragment;
+                return pubTransFragment;
             // Supply a default return statement
             default:
                 return null;
