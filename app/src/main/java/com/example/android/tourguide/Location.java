@@ -18,16 +18,23 @@ public class Location {
         subtype = subtypeValue;
         lat = latitude;
         lon = longitude;
+
+        assignImageID(subtype);
+
     }
 
-    // Constructor with an ImageID
-    public Location(String nameValue, String typeValue, String subtypeValue, double latitude, double longitude, int imageID){
-        name = nameValue;
-        type = typeValue;
-        subtype = subtypeValue;
-        lat = latitude;
-        lon = longitude;
-        imageId = imageID;
+    private void assignImageID(String subtype){
+        switch (subtype){
+            case "Snack":
+                imageId = R.drawable.ic_fastfood;
+                break;
+            case "Chinees":
+                imageId = R.drawable.ic_chinesefood;
+                break;
+            case "Italiaan":
+                imageId = R.drawable.ic_italianfood;
+                break;
+        }
     }
 
     // Getter methods

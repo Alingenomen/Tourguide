@@ -43,11 +43,14 @@ public class LocationAdapter extends ArrayAdapter<Location> {
         // Get the information from the current location object and
         // set this text on its TextView
 
-        TextView songArtistTextView = (TextView) listItemView.findViewById(R.id.locationItemName);
-        songArtistTextView.setText(currentLocation.getName());
+        TextView locationNameTextView = (TextView) listItemView.findViewById(R.id.locationItemName);
+        locationNameTextView.setText(currentLocation.getName());
 
-        TextView songAlbumTextView = (TextView) listItemView.findViewById(R.id.locationItemSubtype);
-        songAlbumTextView.setText(currentLocation.getSubtype());
+        TextView locationSubTypeTextView = (TextView) listItemView.findViewById(R.id.locationItemSubtype);
+        locationSubTypeTextView.setText(currentLocation.getSubtype());
+
+        ImageView locationIcon = listItemView.findViewById(R.id.locationItemIcon);
+        locationIcon.setImageResource(currentLocation.getImageId());
 
         // Return the whole list item layout
         // so that it can be shown in the ListView

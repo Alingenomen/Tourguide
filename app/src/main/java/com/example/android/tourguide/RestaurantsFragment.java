@@ -34,7 +34,7 @@ public class RestaurantsFragment extends Fragment {
         // playlist_listitem.xml layout resource defined in the Android framework.
         // This list item layout contains one TextView, which the adapter will set to
         // display the information.
-        LocationAdapter locationAdapter = new LocationAdapter(getActivity(), MapsFragment.restaurantLocations);
+        LocationAdapter locationAdapter = new LocationAdapter(getActivity(), MainActivity.restaurantLocations);
 
         // Find the ListView object in the view hierarchy of the Activity.
         // There should be a ListView with the view ID called allPlaylistsListView, which is declared in the

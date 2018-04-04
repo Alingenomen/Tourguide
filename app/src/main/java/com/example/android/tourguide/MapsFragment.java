@@ -38,10 +38,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private boolean restoOn, natureOn, transpoOn, sportsOn = false;
     private ImageView restoIcon, natureIcon, transpoIcon, sportsIcon;
     private SupportMapFragment mapFragment;
-    public static ArrayList<Location> restaurantLocations = new ArrayList();
-    public static ArrayList<Location> natureLocations = new ArrayList();
-    public static ArrayList<Location> sportsLocations = new ArrayList();
-    public static ArrayList<Location> pubTransportLocations = new ArrayList();
     private ArrayList visiblePubTransportMarkers = new ArrayList();
     private ArrayList visibleNatureMarkers = new ArrayList();
     private ArrayList visibleRestaurantMarkers = new ArrayList();
@@ -62,9 +58,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         // Initialise the on click listeners
         initialiseOnclickListeners();
-
-        // Read the location data from a raw CSV file
-        processAllLocationDataFromCSV();
 
         // Initialise the Google Map
         initialiseGoogleMap();
@@ -97,7 +90,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
 
                 if (!restoOn) {
-                    addAllMarkers(restaurantLocations, "red");
+                    addAllMarkers(MainActivity.restaurantLocations, "red");
                     restoIcon.setImageResource(R.drawable.ic_dinner_on);
                     restoOn = true;
                 } else {
@@ -114,7 +107,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
 
                 if (!natureOn) {
-                    addAllMarkers(natureLocations, "green");
+                    addAllMarkers(MainActivity.natureLocations, "green");
                     natureIcon.setImageResource(R.drawable.ic_nature_on);
                     natureOn = true;
                 } else {
@@ -131,7 +124,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
 
                 if (!transpoOn) {
-                    addAllMarkers(pubTransportLocations, "orange");
+                    addAllMarkers(MainActivity.pubTransportLocations, "orange");
                     transpoIcon.setImageResource(R.drawable.ic_transport_on);
                     transpoOn = true;
                 } else {
@@ -148,7 +141,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
 
                 if (!sportsOn) {
-                    addAllMarkers(sportsLocations, "blue");
+                    addAllMarkers(MainActivity.sportsLocations, "blue");
                     sportsIcon.setImageResource(R.drawable.ic_sports_on);
                     sportsOn = true;
                 } else {
@@ -160,61 +153,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    // This method reads the location data from a raw CSV file
-    private void processAllLocationDataFromCSV(){
 
-        String name, type, subtype;
-        double lat, lon;
-        //int imageId;
-
-        InputStream csvStream = getResources().openRawResource(R.raw.locations);
-        BufferedReader csvReader = new BufferedReader(
-                new InputStreamReader(csvStream, Charset.forName("UTF-8")));
-        String line = "";
-
-        try {
-            while ((line = csvReader.readLine()) != null) {
-                // Split the line into different cells
-                // using the comma as a separator).
-                String[] cell = line.split(";");
-                name = cell[0];
-                type = cell[1];
-                subtype = cell[2];
-                lat = Double.parseDouble(cell[3]);
-                lon = Double.parseDouble(cell[4]);
-                //imageId = Integer.parseInt(R.drawable+cell[5]);
-
-                // Read the location data and send it
-                // to the gatherLocation method to appoint it to its respective
-                // Arraylist
-                Location location = new Location(name, type, subtype, lat, lon);
-                addLocationToItsArraylist(location);
-
-            }
-        } catch (IOException e1) {
-            Log.e("csvReader", "Error" + line, e1);
-            e1.printStackTrace();
-        }
-    }
-
-    // This method adds the location, read from the
-    private void addLocationToItsArraylist(Location loc){
-        String locationType = loc.getType();
-
-        switch (locationType){
-            case "pubTransportLocation":
-                pubTransportLocations.add(loc);
-                break;
-            case "restaurantLocation":
-                restaurantLocations.add(loc);
-                break;
-            case "natureLocation":
-                natureLocations.add(loc);
-                break;
-            case "sportLocation":
-                sportsLocations.add(loc);
-        }
-    }
 
     // This override method contains all the google map functionality
     // when the google map is ready via its callback method
