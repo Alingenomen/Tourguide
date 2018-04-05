@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 /**
@@ -32,21 +31,19 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 
         View listItemView = convertView;
         if(listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.location_listitem, parent, false);
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.location_listitem, parent, false);
         }
 
         // Get the Location object located at this position in the list
         Location currentLocation = getItem(position);
 
-        // Find the TextViews in the location_listitem.xml layout with their IDs
+        // Find the Views in the location_listitem.xml layout with their IDs
         // Get the information from the current location object and
-        // set this text on its TextView
-
-        TextView locationNameTextView = (TextView) listItemView.findViewById(R.id.locationItemName);
+        // set its information to their respective View
+        TextView locationNameTextView = listItemView.findViewById(R.id.locationItemName);
         locationNameTextView.setText(currentLocation.getName());
 
-        TextView locationSubTypeTextView = (TextView) listItemView.findViewById(R.id.locationItemSubtype);
+        TextView locationSubTypeTextView = listItemView.findViewById(R.id.locationItemSubtype);
         locationSubTypeTextView.setText(currentLocation.getSubtype());
 
         ImageView locationIcon = listItemView.findViewById(R.id.locationItemIcon);

@@ -30,22 +30,22 @@ public class PublicTransportationFragment extends Fragment {
     }
 
     private void initialiseArrayAdapter(){
-        // Create an ArrayAdapter, whose data source is a list of playlists. The
+        // Create an ArrayAdapter, whose data source is a list of locations. The
         // adapter knows how to create layouts for each item in the list, using the
-        // playlist_listitem.xml layout resource defined in the Android framework.
-        // This list item layout contains one TextView, which the adapter will set to
+        // location_listitem.xml layout resource defined in the Android framework.
+        // This list item layout contains one Views, which the adapter will set to
         // display the information.
         LocationAdapter locationAdapter = new LocationAdapter(getActivity(), MainActivity.pubTransportLocations);
 
         // Find the ListView object in the view hierarchy of the Activity.
-        // There should be a ListView with the view ID called allPlaylistsListView, which is declared in the
-        // PlaylistActivity layout file.
+        // There should be a ListView with the view ID called pubTransportListView, which is declared in the
+        // PublicTransportationFragment layout file.
         ListView listView = pubTransportListView;
 
         // Make the ListView use the ArrayAdapter we created above, so that the
-        // ListView will display list items for each playlist in the list of playlists.
+        // ListView will display list items for each public transport location in the list of location.
         // Do this by calling the setAdapter method on the ListView object and pass in
-        // 1 argument, which is the ArrayAdapter with the variable name itemsAdapter.
+        // 1 argument, which is the ArrayAdapter with the variable name locationAdapter.
         listView.setAdapter(locationAdapter);
     }
 }

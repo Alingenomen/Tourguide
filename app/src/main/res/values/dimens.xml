@@ -2,4 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="locationName">14sp</dimen>
     <dimen name="locationSubType">12sp</dimen>
+    <dimen name="googleMapsIconBounds">30dp</dimen>
+    <dimen name="standard16dp">16dp</dimen>
+    <dimen name="standard8dp">8dp</dimen>
 </resources>

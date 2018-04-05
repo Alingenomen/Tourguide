@@ -20,9 +20,10 @@ public class Location {
         lon = longitude;
 
         assignImageID(subtype);
-
     }
 
+    // Method to assign the appropriate sub type icon to
+    // the location which gets displayed in the location_listitem.xml file
     private void assignImageID(String subtype){
         switch (subtype){
             case "Snack":
@@ -33,6 +34,33 @@ public class Location {
                 break;
             case "Italiaan":
                 imageId = R.drawable.ic_italianfood;
+                break;
+            case "Bus":
+                imageId = R.drawable.ic_bus;
+                break;
+            case "Trein":
+                imageId = R.drawable.ic_train;
+                break;
+            case "Park":
+                imageId = R.drawable.ic_park;
+                break;
+            case "Bos":
+                imageId = R.drawable.ic_forest;
+                break;
+            case "Voetbal":
+                imageId = R.drawable.ic_soccer;
+                break;
+            case "Skating":
+                imageId = R.drawable.ic_skateboarding;
+                break;
+            case "Fitness":
+                imageId = R.drawable.ic_fitness;
+                break;
+            case "Tennis":
+                imageId = R.drawable.ic_tennis;
+                break;
+            case "Divers":
+                imageId = R.drawable.ic_divers;
                 break;
         }
     }

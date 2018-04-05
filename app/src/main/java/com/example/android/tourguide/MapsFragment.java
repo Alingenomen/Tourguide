@@ -153,8 +153,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-
-
     // This override method contains all the google map functionality
     // when the google map is ready via its callback method
     @Override

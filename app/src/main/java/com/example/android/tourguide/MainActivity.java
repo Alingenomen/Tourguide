@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Global variables
     private ViewPager viewPager;
-    private TabLayout tabLayout;
     private int tabHeaderImages[] = new int[] {R.drawable.ic_googlemaps, R.drawable.ic_dinner_off,
             R.drawable.ic_sports_off, R.drawable.ic_nature_off, R.drawable.ic_transport_off};
     public static ArrayList<Location> restaurantLocations = new ArrayList();
@@ -50,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     // This method initialises the TabLayout and
     // assigns icons to the headers
     private void initialiseTabLayout(){
+        TabLayout tabLayout;
+
         tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         // configure icons
